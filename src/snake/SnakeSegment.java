@@ -39,17 +39,17 @@ public abstract class SnakeSegment {
                 break;
             case WEST:
             {
-                x=(x-size);
+                x=(x-size/3);
             }
                 break;
             case NORTH:
             {
-                y=(y-size);
+                y=(y-size/3);
             }
                 break;
             case SOUTH:
             {
-                y=(y+size);
+                y=(y+size/3);
             }
                 break;
         }

@@ -12,7 +12,7 @@ public class Snake {
         snake = new ArrayList<>();
         snake.add(head);
         for(int i = 1; i<=length;i++){
-            snake.add(new SnakeBody(snake.get(i-1),10));
+            snake.add(new SnakeBody(snake.get(i-1),9));
         }
     }
     public List<SnakeSegment> getSnake(){
@@ -23,7 +23,7 @@ public class Snake {
     }
 
     public void grow() {
-        snake.add(new SnakeBody(snake.get(snake.size()-1),10));
+        snake.add(new SnakeBody(snake.get(snake.size()-1),9));
     }
 
     public void move() {

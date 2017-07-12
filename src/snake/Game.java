@@ -4,9 +4,6 @@ import org.newdawn.slick.*;
 
 import java.util.List;
 
-/**
- * @author panos
- */
 public class Game extends BasicGame
 {
     public Game()
@@ -20,7 +17,7 @@ public class Game extends BasicGame
         {
             AppGameContainer app = new AppGameContainer(new Game());
             app.setDisplayMode(800, 600, false);
-            app.setTargetFrameRate(10);
+            app.setTargetFrameRate(60);
             app.start();
         }
         catch (SlickException e)
@@ -33,14 +30,14 @@ public class Game extends BasicGame
     @Override
     public void init(GameContainer container) throws SlickException
     {
-        s = new Snake(3);
+        s = new Snake(5);
         segments = s.getSnake();
     }
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException
     {
-        segments = s.getSnake();
+       // segments = s.getSnake();
 
 
     }
