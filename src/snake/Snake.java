@@ -1,36 +1,60 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
 package snake;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Snake {
-    SnakeSegment head;
-    List<SnakeSegment> snake;
+    SnakeSegment head = new SnakeHead(5, 5, 10);
+    List<SnakeSegment> snake = new ArrayList();
 
     public Snake(int length) {
-        head = new SnakeHead(400,300,9);
-        snake = new ArrayList<>();
-        snake.add(head);
-        for(int i = 1; i<=length;i++){
-            snake.add(new SnakeBody(snake.get(i-1),9));
+        this.snake.add(this.head);
+
+        for(int i = 1; i <= length; ++i) {
+            this.snake.add(new SnakeBody((SnakeSegment)this.snake.get(i - 1)));
         }
-    }
-    public List<SnakeSegment> getSnake(){
-        return snake;
-    }
-    public void changeDirection(Direction d){
-        head.direction=d;
+
     }
 
-    public void grow() {
-        snake.add(new SnakeBody(snake.get(snake.size()-1),9));
+    public List<SnakeSegment> getSnake() {
+        return this.snake;
+    }
+
+    public void changeDirection(Direction d) {
+        this.head.direction = d;
+    }
+
+    public void grow(int i) {
+        while(i-- > 0) {
+            this.snake.add(new SnakeBody((SnakeSegment)this.snake.get(this.snake.size() - 1)));
+        }
+
+    }
+
+    public void shrink(int i) {
+        while(this.snake.size() > i) {
+            this.snake.remove(i);
+        }
+
     }
 
     public void move() {
-        head.move();
-        for(int i=snake.size()-1;i>0;i--){
-            snake.get(i).setX(snake.get(i-1).getX());
-            snake.get(i).setY(snake.get(i-1).getY());
+        this.head.move();
+
+        for(int i = this.snake.size() - 1; i > 0; --i) {
+            if (this.head.getX() == ((SnakeSegment)this.snake.get(i)).getX() && this.head.getY() == ((SnakeSegment)this.snake.get(i)).getY()) {
+                this.shrink(i);
+                System.out.println("Te-ai muscat!!! " + this.snake.size());
+            } else {
+                ((SnakeSegment)this.snake.get(i)).setX(((SnakeSegment)this.snake.get(i - 1)).getX());
+                ((SnakeSegment)this.snake.get(i)).setY(((SnakeSegment)this.snake.get(i - 1)).getY());
+            }
         }
+
     }
 }

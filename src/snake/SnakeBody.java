@@ -1,13 +1,19 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
 package snake;
 
 public class SnakeBody extends SnakeSegment {
-    public SnakeBody(){
-        super();
+    public SnakeBody() {
     }
-    public SnakeBody(int x, int y, int size){
-        super(x,y,size);
+
+    public SnakeBody(int x, int y, int size) {
+        super(x, y, size);
     }
-    public SnakeBody(SnakeSegment previous,int size){
-        super(previous.getX()+size,previous.getY(),size);
+
+    public SnakeBody(SnakeSegment previous) {
+        super(previous);
     }
 }
