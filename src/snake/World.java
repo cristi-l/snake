@@ -27,34 +27,34 @@ public class World {
         this.width = width;
         this.map = new Tile[width][height];
 
-        for(int i = 0; i < this.map.length; ++i) {
-            for(int j = 0; j < this.map[i].length; ++j) {
+        for(int i = 0; i < this.map.length; ++i)
+            for(int j = 0; j < this.map[i].length; ++j)
                 this.map[i][j] = Tile.empty;
-                if (i == 0 || j == 0 || i == width - 1 || j == height - 1) {
-                    this.map[i][j] = Tile.wall;
-                }
-            }
-        }
 
-        this.generateFood();
     }
 
     public void loadMap(String ref, String tileSetLocation) throws SlickException {
         this.tiledMap = new TiledMap(ref, tileSetLocation);
+        for(int i = 0; i < this.map.length; ++i)
+            for(int j = 0; j < this.map[i].length; ++j)
+                if(tiledMap.getTileProperty(tiledMap.getTileId(i,j,0),"blocked","").equals("true"))
+                    this.map[i][j] = Tile.wall;
+        this.generateFood();
     }
+
 
     public void renderMap(int x, int y) {
         this.tiledMap.render(x, y);
     }
 
     private void generateFood() {
-        int x = this.r.nextInt(this.height);
-
-        int y;
-        for(y = this.r.nextInt(this.width); this.map[x][y] != Tile.empty; y = this.r.nextInt(this.width)) {
+        int x,y;
+        do {
             x = this.r.nextInt(this.height);
-        }
+            y= this.r.nextInt(this.width);
+        }while(this.map[x][y]!=Tile.empty);
 
+        System.out.println("mancare la " + x+", "+y);
         this.map[x][y] = Tile.food;
     }
 
