@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
-
 package snake;
 
 import java.util.List;
@@ -14,8 +9,8 @@ public class Game extends StateBasedGame {
 
     public Game() {
         super("Snake");
-        this.addState(new Menu(0));
-        this.addState(new Play(1));
+        this.addState(new Menu());
+        this.addState(new Play());
     }
 
     public static void main(String[] arguments) {

@@ -14,34 +14,18 @@ public class World {
     Tile[][] map;
     TiledMap tiledMap;
     int[] levels = new int[]{0, 0, 46, 41, 36, 31, 26, 21, 16, 11, 1};
-    Snake s = new Snake(4);
-    Random r = new Random();
+    private Snake s = new Snake(4);
+    private Random r = new Random();
     int size;
     int width;
     int height;
     int frameCount = 0;
 
-    public World(int width, int height, int size) {
+    public World(int size, String ref, String tileSetLocation) throws SlickException {
         this.size = size;
-        this.height = height;
-        this.width = width;
-        this.map = new Tile[width][height];
-
-        for(int i = 0; i < this.map.length; ++i)
-            for(int j = 0; j < this.map[i].length; ++j)
-                this.map[i][j] = Tile.empty;
-
-    }
-
-    public void loadMap(String ref, String tileSetLocation) throws SlickException {
-        this.tiledMap = new TiledMap(ref, tileSetLocation);
-        for(int i = 0; i < this.map.length; ++i)
-            for(int j = 0; j < this.map[i].length; ++j)
-                if(tiledMap.getTileProperty(tiledMap.getTileId(i,j,0),"blocked","").equals("true"))
-                    this.map[i][j] = Tile.wall;
+        loadMap(ref,tileSetLocation);
         this.generateFood();
     }
-
 
     public void renderMap(int x, int y) {
         this.tiledMap.render(x, y);
@@ -58,12 +42,11 @@ public class World {
         this.map[x][y] = Tile.food;
     }
 
-    public void update() {
+    public void update() throws Exception {
         if (this.frameCount++ % this.getLevel(this.s.getSnake().size()) == 0) {
             this.s.move();
             this.checkCollision();
         }
-
     }
 
     public int getLevel(int size) {
@@ -72,7 +55,6 @@ public class World {
                 return i;
             }
         }
-
         return 1;
     }
 
@@ -88,14 +70,15 @@ public class World {
         return this.s;
     }
 
-    private void checkCollision() {
+    private void checkCollision() throws Exception {
         List<SnakeSegment> segments = this.s.getSnake();
 
         for(int i = 0; i < segments.size(); ++i) {
-            int x = ((SnakeSegment)segments.get(i)).getX();
-            int y = ((SnakeSegment)segments.get(i)).getY();
+            int x = segments.get(i).getX();
+            int y = segments.get(i).getY();
             if (this.map[x][y] == Tile.wall) {
                 System.out.println("You hit a wall!!!");
+                throw new Exception("Game Over!");
             }
 
             if (this.map[x][y] == Tile.food) {
@@ -109,5 +92,23 @@ public class World {
 
     public int getSize() {
         return this.size;
+    }
+
+    public void reset(){
+        this.s=new Snake(4);
+    }
+    public void loadMap(String ref, String tileSetLocation) throws SlickException {
+        this.tiledMap = new TiledMap(ref, tileSetLocation);
+        this.height = tiledMap.getHeight();
+        this.width = tiledMap.getWidth();
+        this.map = new Tile[width][height];
+
+        for(int i = 0; i < this.map.length; ++i)
+            for(int j = 0; j < this.map[i].length; ++j) {
+                if (tiledMap.getTileProperty(tiledMap.getTileId(i, j, 0), "blocked", "").equals("true"))
+                    this.map[i][j] = Tile.wall;
+                else
+                    this.map[i][j] = Tile.empty;
+            }
     }
 }

@@ -20,7 +20,6 @@ public abstract class SnakeSegment {
         this.size = size;
         this.direction = Direction.SOUTH;
     }
-
     public SnakeSegment(SnakeSegment previous) {
         this.direction = previous.direction;
         switch(previous.direction) {

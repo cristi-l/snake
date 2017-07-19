@@ -21,6 +21,9 @@ public class Snake {
 
     }
 
+    public Direction getDirection() {
+        return this.head.direction;
+    }
     public List<SnakeSegment> getSnake() {
         return this.snake;
     }

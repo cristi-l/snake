@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="2017.07.11" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" nextobjectid="1">
+ <tileset firstgid="1" source="basictiles_2.tsx"/>
+ <group name="Group 1" offsetx="59" offsety="70"/>
+ <layer name="Tile Layer 1" width="20" height="20" offsetx="60" offsety="69">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC62U0Q3EIAxDMwAZKt2g993P23+GayUiRZadQxUfFrTAkwOGy8w+m3TdOm+NTToXef6C52XdMaV4MeWlz3ij8ByYqMphvCF42e/4MccYL9fXechHjynFwzpWPSZP7XeY3oMdPFZjEJ46uxBjKkNveex/lxfk1ayrehXvEHM7DssL3jVWV/2untX9zRZ52OJb4X94LNf1DWB+u/NA3oo35o9lquNhDh/W1/a99w/rBy7A8DVABgAA
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="20" height="20" offsetx="61" offsety="70">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGHggj0bjAqJQ2heLGC4zcQFfAvK4zCRGHz41ogyE3YZsDrpZxNhPDb/jCldSzKAE0Np8cgGhcCFWPT5zSLVjqANC/qU0PPzQaGrYg6yWkrTqh4QZsNCUmEkPAADlfSL6QAYAAA==
+  </data>
+ </layer>
+</map>
