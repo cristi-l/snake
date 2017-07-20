@@ -3,7 +3,6 @@ package snake;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.List;
 
@@ -13,11 +12,11 @@ public class Play extends BasicGameState {
     World w;
     List<SnakeSegment> segments;
     Tile[][] map;
-    TiledMap grassMap;
-    Image foodImg[];
-    Animation foodAnimation;
-    private boolean isOver;
 
+    Animation foodAnimation;
+
+    SpriteSheet spriteSheet;
+    Image food, head, horizontal, vertical, tail, northWest, northEast, southEast, southWest;
     public Play() {
     }
 
@@ -28,40 +27,124 @@ public class Play extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        this.w = new World( 16,"res/map2.tmx", "res");
+        this.w = new World( 1,"res/map2.tmx", "res");
         this.s = this.w.getSnake();
         this.segments = this.w.getSnakeSegments();
         this.map = this.w.getMap();
-        foodImg = new Image[1];
-        foodImg[0] = new Image("res/Apple.png");
-        foodAnimation=new Animation(foodImg,1);
+
+        spriteSheet = new SpriteSheet(new Image("res/snakeset32.png"),32,32);
+        food = spriteSheet.getSprite(3,2);
+        head = spriteSheet.getSprite(1,2);
+        horizontal = spriteSheet.getSprite(2,0);
+        vertical = spriteSheet.getSprite(1,1);
+        northWest= spriteSheet.getSprite(3,1);
+        southWest= spriteSheet.getSprite(3,0);
+        northEast= spriteSheet.getSprite(2,1);
+        southEast= spriteSheet.getSprite(1,0);
+        tail = spriteSheet.getSprite(0,2);
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics g) throws SlickException {
 
         this.w.renderMap(0, 0);
-        g.setColor(Color.blue);
-        g.fillRoundRect((float)((this.segments.get(0)).getX() * this.w.getSize()),
-                (float)((this.segments.get(0)).getY() * this.w.getSize()),
-                (float)this.w.getSize(),
-                (float)this.w.getSize(),
-                this.w.getSize());
-        g.setColor(Color.white);
-
-        for(int i = 2; i < this.segments.size(); ++i) {
-            g.fillRoundRect((float)((this.segments.get(i)).getX() * this.w.getSize()),
-                    (float)((this.segments.get(i)).getY() * this.w.getSize()),
-                    (float)this.w.getSize(),
-                    (float)this.w.getSize(),
-                    this.w.getSize());
+        int i = 1;
+        switch (segments.get(0).direction){
+            case SOUTH:
+                head.setRotation(0);
+                break;
+            case NORTH:
+                head.setRotation(180);
+                break;
+            case EAST:
+                head.setRotation(270);
+                break;
+            case WEST:
+                head.setRotation(90);
+                break;
         }
-        for(int i = 0; i < this.map.length; ++i) {
-            for(int j = 0; j < this.map[i].length; ++j) {
+        head.draw((float)(segments.get(i).getX() * this.w.getSize()),(float)(segments.get(i).getY() * this.w.getSize()));
+
+
+        for(i = 2; i < this.segments.size()-1; i++)
+        {
+            int x = segments.get(i).getX(),y = segments.get(i).getY();
+            Direction dCurrent = segments.get(i).direction, dNext=segments.get(i-1).direction;
+            if(dCurrent==dNext)
+                switch (dCurrent) {
+                    case NORTH:
+                        vertical.draw((float) (x* this.w.getSize()), (float) (y * this.w.getSize()));
+                        break;
+                    case SOUTH: {
+                        vertical.setRotation(180);
+                        vertical.draw((float) (x * this.w.getSize()), (float) (y * this.w.getSize()));
+                        break;
+                    }
+                    case WEST:
+                        horizontal.draw((float) (x * this.w.getSize()), (float) (y * this.w.getSize()));
+                        break;
+                    case EAST: {
+                        horizontal.setRotation(180);
+                        horizontal.draw((float) (x * this.w.getSize()), (float) (y * this.w.getSize()));
+                        break;
+                    }
+                }
+                else {
+                switch (dCurrent) {
+                    case NORTH: {
+                        if (dNext == Direction.WEST)
+                            southWest.draw((float) (x * this.w.getSize()), (float) (y * this.w.getSize()));
+                        if (dNext == Direction.EAST)
+                            southEast.draw((float) (x * this.w.getSize()), (float) (y * this.w.getSize()));
+                    }
+                    break;
+                    case SOUTH: {
+                        if (dNext == Direction.WEST)
+                            northWest.draw((float) (x * this.w.getSize()), (float) (y * this.w.getSize()));
+                        if (dNext == Direction.EAST)
+                            northEast.draw((float) (x * this.w.getSize()), (float) (y * this.w.getSize()));
+                    }
+                    break;
+
+                    case EAST:{
+                        if (dNext == Direction.NORTH)
+                            northWest.draw((float) (x * this.w.getSize()), (float) (y * this.w.getSize()));
+                        if (dNext == Direction.SOUTH)
+                            southWest.draw((float) (x * this.w.getSize()), (float) (y * this.w.getSize()));
+                    }
+                    break;
+                    case WEST: {
+                        if (dNext == Direction.NORTH)
+                            northEast.draw((float) (x * this.w.getSize()), (float) (y * this.w.getSize()));
+                        if (dNext == Direction.SOUTH)
+                            southEast.draw((float) (x * this.w.getSize()), (float) (y * this.w.getSize()));
+                    }
+                    break;
+                }
+            }
+
+        }
+        switch (segments.get(i-1).direction){
+            case SOUTH:
+                tail.setRotation(270);
+                break;
+            case NORTH:
+                tail.setRotation(90);
+                break;
+            case EAST:
+                tail.setRotation(180);
+                break;
+            case WEST:
+                tail.setRotation(0);
+                break;
+        }
+        tail.draw((float)(segments.get(i).getX() * this.w.getSize()),(float)(segments.get(i).getY() * this.w.getSize()));
+        for(i = 0; i < this.map.length; i++) {
+            for(int j = 0; j < this.map[i].length; j++) {
                 switch(this.map[i][j]) {
                     case food:
                         g.setColor(Color.red);
-                        foodAnimation.draw((float)(i * this.w.getSize()),(float)(j * this.w.getSize()));
+                        food.draw((float)(i * this.w.getSize()),(float)(j * this.w.getSize()));
                         break;
                     default:
                         break;

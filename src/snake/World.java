@@ -11,10 +11,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class World {
+    public static  final int INITIAL_SNAKE_LENGTH = 3;
+
     Tile[][] map;
     TiledMap tiledMap;
     int[] levels = new int[]{0, 0, 46, 41, 36, 31, 26, 21, 16, 11, 1};
-    private Snake s = new Snake(4);
+    private Snake s = new Snake(INITIAL_SNAKE_LENGTH);
     private Random r = new Random();
     int size;
     int width;
@@ -22,8 +24,8 @@ public class World {
     int frameCount = 0;
 
     public World(int size, String ref, String tileSetLocation) throws SlickException {
-        this.size = size;
         loadMap(ref,tileSetLocation);
+
         this.generateFood();
     }
 
@@ -95,14 +97,14 @@ public class World {
     }
 
     public void reset(){
-        this.s=new Snake(4);
+        this.s=new Snake(INITIAL_SNAKE_LENGTH);
     }
     public void loadMap(String ref, String tileSetLocation) throws SlickException {
         this.tiledMap = new TiledMap(ref, tileSetLocation);
         this.height = tiledMap.getHeight();
         this.width = tiledMap.getWidth();
         this.map = new Tile[width][height];
-
+        this.size=tiledMap.getTileSet(0).tileHeight;
         for(int i = 0; i < this.map.length; ++i)
             for(int j = 0; j < this.map[i].length; ++j) {
                 if (tiledMap.getTileProperty(tiledMap.getTileId(i, j, 0), "blocked", "").equals("true"))
@@ -110,5 +112,6 @@ public class World {
                 else
                     this.map[i][j] = Tile.empty;
             }
+
     }
 }
